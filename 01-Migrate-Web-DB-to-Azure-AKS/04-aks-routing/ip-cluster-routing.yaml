@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ip-cluster-routing
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/lua-resty-waf: "active"
+    nginx.ingress.kubernetes.io/lua-resty-waf-debug: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:          
+          serviceName: dvwa
+          servicePort: 80
+      - path: /netcore
+        backend:          
+          serviceName: netcore
+          servicePort: 80
+      
