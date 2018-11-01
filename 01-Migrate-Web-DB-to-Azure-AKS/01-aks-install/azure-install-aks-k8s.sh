@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Create Azure Active Directory - App Registration
-APPID="12e03b34-3406-463d-b9f2-850671946c15"
-APPSECRET="Y0|{+|>RC#&6]^){)}:%(@[;to^@R{!i.a=.>2$!I?"
+APPID='12e03b34-3406-463d-b9f2-850671946c15'
+APPSECRET='Y0|{+|>RC#&6]^){)}:%(@[;to^@R{!i.a=.>2$!I?'
 
-AZURE_GROUPNAME="AKS-THESIS"
-AZURE_KUBE_CLUSTER_NAME="DUCPHUONGKHANG-KUBE"
-AZURE_KUBE_NODE="1"
+AZURE_GROUPNAME='AKS-THESIS'
+AZURE_KUBE_CLUSTER_NAME='DUCPHUONGKHANG-KUBE'
+AZURE_KUBE_NODE='1'
 
 # Create RESOURCE GROUP
 az group create --name $AZURE_GROUPNAME --location southeastasia 
