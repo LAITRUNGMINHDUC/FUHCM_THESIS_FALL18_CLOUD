@@ -4,9 +4,10 @@
 APPID='12e03b34-3406-463d-b9f2-850671946c15'
 APPSECRET='Y0|{+|>RC#&6]^){)}:%(@[;to^@R{!i.a=.>2$!I?'
 
-AZURE_GROUPNAME='AKS-THESIS'
+AZURE_GROUPNAME='THESIS-AKS'
 AZURE_KUBE_CLUSTER_NAME='DUCPHUONGKHANG-KUBE'
 AZURE_KUBE_NODE='1'
+AZURE_KUBE_NODE_SIZE='Standard_B2s' #https://azure.microsoft.com/en-us/blog/introducing-burstable-vm-support-in-aks/
 
 # Create RESOURCE GROUP
 az group create --name $AZURE_GROUPNAME --location southeastasia 
@@ -15,6 +16,7 @@ az group create --name $AZURE_GROUPNAME --location southeastasia
 az aks create --resource-group $AZURE_GROUPNAME \
 	--name $AZURE_KUBE_CLUSTER_NAME \
 	--node-count $AZURE_KUBE_NODE \
+	--node-vm-size $AZURE_KUBE_NODE_SIZE \
 	--enable-addons monitoring \
 	--service-principal $APPID \
 	--client-secret $APPSECRET \
