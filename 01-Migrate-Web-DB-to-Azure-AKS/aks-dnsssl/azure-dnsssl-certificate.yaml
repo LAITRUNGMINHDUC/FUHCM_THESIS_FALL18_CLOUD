@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: tls-secret
+spec:
+  secretName: tls-secret
+  dnsNames: # Replace these domains with your domains
+  - shop.thesis.analyticsvn.com
+  - api.thesis.analyticsvn.com
+  - dashboard.thesis.analyticsvn.com
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains: # Replace these domains with your domains
+      - shop.thesis.analyticsvn.com
+      - api.thesis.analyticsvn.com
+      - dashboard.thesis.analyticsvn.com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
