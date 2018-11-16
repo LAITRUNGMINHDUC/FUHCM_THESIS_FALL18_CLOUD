@@ -1,17 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dpk-shop
+  name: dpk-shop # Name of Webserver Kubernetes service 
+                 #- for routing and DNS
   namespace: dpk-shop
 spec:
   ports:
-  - port: 80
+  - port: 80 # Port of pod
   selector:
     app: php-apache
   clusterIP: None
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: php-apache-deployment
   namespace: dpk-shop
@@ -19,6 +20,7 @@ spec:
   selector:
     matchLabels:
       app: php-apache
+  serviceName: 'dpk-shop'
   replicas: 2 # Replicate to 2 pods for High Availability
   template:
     metadata:
@@ -27,20 +29,21 @@ spec:
     spec:
       containers:
       - name: webdevops
-        image: php-apache:5.6
+        image: webdevops/php-apache:5.6
         resources:
           requests:
             cpu: 100m
             memory: 128Mi
           limits:
-            cpu: 250m
-            memory: 256Mi          
+            cpu: 500m
+            memory: 512Mi          
         ports:
         - containerPort: 80
         volumeMounts:
-          - name: dpk-shop-pvc # Must be equal to volumes:name (below)
-            mountPath: '/var/www/html' # Path to Website location in Apache
+          - name: azure-managed-disk # Must be equal to volumes:name (below)
+            mountPath: '/app' # Path to Website location in Apache
       volumes:
-        - name:  dpk-shop-pvc 
+        - name: azure-managed-disk 
           persistentVolumeClaim:
-            claimName: dpk-shop-pvc # Must be equal to metadata:name in azure-kube-persistent-volume.yaml
+            claimName: azure-managed-disk # Must be equal to metadata:name 
+                                    #in azure-kube-persistent-volume.yaml
