@@ -46,4 +46,6 @@ spec:
         - name: azure-managed-disk 
           persistentVolumeClaim:
             claimName: azure-managed-disk # Must be equal to metadata:name 
-                                    #in azure-kube-persistent-volume.yaml
+                                    #in azure-disk-pvc.yaml
+                                    
+                                    

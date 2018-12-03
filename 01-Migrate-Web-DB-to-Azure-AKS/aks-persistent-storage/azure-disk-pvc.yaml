@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: azure-managed-disk
-  namespace: dpk-shop
+  name: azure-managed-disk # Name of the volume
+  namespace: dpk-shop 
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: managed-premium
+  storageClassName: managed-premium # Managed-Premium is SSD disk
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi # Maximum size allocated

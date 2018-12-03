@@ -9,6 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true" # Force redirect HTTPS
     nginx.ingress.kubernetes.io/rewrite-target: / 
     nginx.ingress.kubernetes.io/lua-resty-waf: "active" # Turn on WAF
+    nginx.ingress.kubernetes.io/lua-resty-waf-ignore-rulesets: "41000_sqli"
+    nginx.ingress.kubernetes.io/lua-resty-waf-score-threshold: "10"
 spec:
   tls:
   - hosts: # Replace your domains in here

@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ducltm-test # Name of the volume
+  namespace: dpk-shop 
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: managed-premium # Managed-Premium is SSD disk
+  resources:
+    requests:
+      storage: 1Gi # Maximum size allocated
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ducltm-test # Name of Webserver Kubernetes service 
+                 #- for routing and DNS
+  namespace: dpk-shop
+spec:
+  ports:
+  - port: 80 # Port of pod
+  selector:
+    app: php-apache
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ducltm-test
+  namespace: dpk-shop
+spec:
+  selector:
+    matchLabels:
+      app: php-apache
+  serviceName: 'ducltm-test'
+  replicas: 1 # Replicate to 2 pods for High Availability
+  template:
+    metadata:
+      labels:
+        app: php-apache
+    spec:
+      containers:
+      - name: webdevops
+        image: webdevops/php-apache:5.6
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi          
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: ducltm-test # Must be equal to volumes:name (below)
+            mountPath: '/app' # Path to Website location in Apache
+      volumes:
+        - name: ducltm-test 
+          persistentVolumeClaim:
+            claimName: ducltm-test # Must be equal to metadata:name 
+                                    #in azure-disk-pvc.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ducltm-routing
+  namespace: dpk-shop
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/lua-resty-waf: "active"
+    nginx.ingress.kubernetes.io/lua-resty-waf-debug: "false"
+spec:
+  rules:
+  - host: ducltm.thesis.analyticsvn.com # Replace your domain in here  
+    http:
+      paths:
+      - path: /
+        backend:          
+          serviceName: ducltm-test
+          servicePort: 80
+                                  
