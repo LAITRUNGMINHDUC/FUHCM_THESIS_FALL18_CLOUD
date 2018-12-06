@@ -7,7 +7,7 @@ IP="104.215.181.249"
 # Name of Ingress in azure-install-aks-ingress.sh
 DNSNAME="ducphuongkhang-ingress"
 
-helm install --no-crd-hook stable/cert-manager \
+helm install stable/cert-manager \
     --namespace $INGRESS_DNS_NAMESPACE \
     --name $NAME \
     --set ingressShim.defaultIssuerName=letsencrypt-prod \

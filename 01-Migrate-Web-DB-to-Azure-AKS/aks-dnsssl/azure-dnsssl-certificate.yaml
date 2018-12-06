@@ -6,16 +6,12 @@ spec:
   secretName: tls-secret
   dnsNames: # Replace these domains with your domains
   - shop.thesis.analyticsvn.com
-  - api.thesis.analyticsvn.com
-  - dashboard.thesis.analyticsvn.com
   acme:
     config:
     - http01:
         ingressClass: nginx
       domains: # Replace these domains with your domains
       - shop.thesis.analyticsvn.com
-      - api.thesis.analyticsvn.com
-      - dashboard.thesis.analyticsvn.com
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
